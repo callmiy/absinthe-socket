@@ -1,6 +1,6 @@
 {
-  "name": "@absinthe/socket",
-  "version": "0.2.1",
+  "name": "@kanmii/socket",
+  "version": "0.2.2",
   "description": "Absinthe Socket",
   "module": "dist/index.js",
   "main": "compat/cjs/index.js",
@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/absinthe-graphql/absinthe-socket.git"
+    "url": "git+https://github.com/kanmii/absinthe-socket.git"
   },
   "author": "Mauro Titimoli <mgtitimoli@gmail.com> (https://github.com/mgtitimoli)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/absinthe-graphql/absinthe-socket/issues"
+    "url": "https://github.com/kanmii/absinthe-socket/issues"
   },
   "homepage": "https://github.com/absinthe-graphql/absinthe-socket#readme",
   "keywords": [
