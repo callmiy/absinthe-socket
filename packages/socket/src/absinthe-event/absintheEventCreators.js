@@ -1,21 +1,13 @@
-// @flow
-
 import absintheEventNames from "./absintheEventNames";
 
-import type {AbsintheDocEvent, AbsintheUnsubscribeEvent} from "./types";
-
-const createAbsintheUnsubscribeEvent = (
-  payload: $ElementType<AbsintheUnsubscribeEvent, "payload">
-): AbsintheUnsubscribeEvent => ({
+const createAbsintheUnsubscribeEvent = (payload) => ({
   payload,
-  name: absintheEventNames.unsubscribe
+  name: absintheEventNames.unsubscribe,
 });
 
-const createAbsintheDocEvent = <Variables: void | Object>(
-  payload: $ElementType<AbsintheDocEvent<Variables>, "payload">
-): AbsintheDocEvent<Variables> => ({
+const createAbsintheDocEvent = (payload) => ({
   payload,
-  name: absintheEventNames.doc
+  name: absintheEventNames.doc,
 });
 
-export {createAbsintheDocEvent, createAbsintheUnsubscribeEvent};
+export { createAbsintheDocEvent, createAbsintheUnsubscribeEvent };

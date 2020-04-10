@@ -52,7 +52,7 @@ declare module "phoenix" {
     ): Push,
     resend(timeout: number): void,
     send(): void,
-    receive(status, callback: (response: any) => any): Push
+    receive(status: any, callback: (response: any) => any): Push
   }
 
   declare export class Channel {

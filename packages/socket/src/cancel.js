@@ -1,5 +1,3 @@
-// @flow
-
 import notifierCancel from "./notifier/cancel";
 import notifierFlushCanceled from "./notifier/flushCanceled";
 import notifierRefresh from "./notifier/refresh";
@@ -7,10 +5,7 @@ import notifierRemove from "./notifier/remove";
 import refreshNotifier from "./refreshNotifier";
 import requestStatuses from "./notifier/requestStatuses";
 import updateNotifiers from "./updateNotifiers";
-import {unsubscribe} from "./subscription";
-
-import type {AbsintheSocket} from "./types";
-import type {Notifier} from "./notifier/types";
+import { unsubscribe } from "./subscription";
 
 const cancelQueryOrMutationSending = (absintheSocket, notifier) =>
   updateNotifiers(
@@ -64,10 +59,7 @@ const cancelActive = (absintheSocket, notifier) =>
  *
  * withAbsintheSocket.cancel(absintheSocket, notifier);
  */
-const cancel = (
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<any, any>
-): AbsintheSocket =>
+const cancel = (absintheSocket, notifier) =>
   notifier.isActive ? cancelActive(absintheSocket, notifier) : absintheSocket;
 
 export default cancel;

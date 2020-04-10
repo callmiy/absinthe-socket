@@ -1,12 +1,4 @@
-// @flow
-
-import {errorsToString as gqlErrorsToString} from "@jumpn/utils-graphql";
-
-import type {
-  GqlError,
-  GqlResponse
-} from "@jumpn/utils-graphql/compat/cjs/types";
-import type {Message} from "phoenix";
+import { errorsToString as gqlErrorsToString } from "@jumpn/utils-graphql";
 
 import abortNotifier from "./abortNotifier";
 import notifierFind from "./notifier/find";
@@ -17,27 +9,12 @@ import notifierNotifyStartEvent from "./notifier/notifyStartEvent";
 import notifierRemove from "./notifier/remove";
 import notifierReset from "./notifier/reset";
 import pushAbsintheEvent from "./pushAbsintheEvent";
-import pushRequestUsing, {onError} from "./pushRequestUsing";
+import pushRequestUsing, { onError } from "./pushRequestUsing";
 import refreshNotifier from "./refreshNotifier";
 import requestStatuses from "./notifier/requestStatuses";
 import updateNotifiers from "./updateNotifiers";
-import {createAbsintheUnsubscribeEvent} from "./absinthe-event/absintheEventCreators";
-import {createErrorEvent} from "./notifier/event/eventCreators";
-
-import type {AbsintheSocket, NotifierPushHandler} from "./types";
-import type {Notifier} from "./notifier/types";
-
-type SubscriptionPayload<Data> = {|
-  result: GqlResponse<Data>,
-  subscriptionId: string
-|};
-
-// TODO: improve this type
-type UnsubscribeResponse = {};
-
-type SubscriptionResponse =
-  | {|subscriptionId: string|}
-  | {|errors: Array<GqlError>|};
+import { createAbsintheUnsubscribeEvent } from "./absinthe-event/absintheEventCreators";
+import { createErrorEvent } from "./notifier/event/eventCreators";
 
 const onUnsubscribeSucceedCanceled = (absintheSocket, notifier) =>
   updateNotifiers(
@@ -51,9 +28,10 @@ const onUnsubscribeSucceedActive = (absintheSocket, notifier) =>
     refreshNotifier(absintheSocket, notifierReset(notifier))
   );
 
-const createUnsubscribeError = message => new Error(`unsubscribe: ${message}`);
+const createUnsubscribeError = (message) =>
+  new Error(`unsubscribe: ${message}`);
 
-const unsubscribeHandler: NotifierPushHandler<UnsubscribeResponse> = {
+const unsubscribeHandler = {
   onError: (absintheSocket, notifier, errorMessage) =>
     abortNotifier(
       absintheSocket,
@@ -73,37 +51,34 @@ const unsubscribeHandler: NotifierPushHandler<UnsubscribeResponse> = {
     } else {
       onUnsubscribeSucceedCanceled(absintheSocket, notifier);
     }
-  }
+  },
 };
 
 const pushAbsintheUnsubscribeEvent = (
   absintheSocket,
-  {request, subscriptionId}
+  { request, subscriptionId }
 ) =>
   pushAbsintheEvent(
     absintheSocket,
     request,
     unsubscribeHandler,
-    createAbsintheUnsubscribeEvent({subscriptionId})
+    createAbsintheUnsubscribeEvent({ subscriptionId })
   );
 
-const unsubscribe = (
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<any, any>
-) =>
+const unsubscribe = (absintheSocket, notifier) =>
   pushAbsintheUnsubscribeEvent(
     absintheSocket,
     refreshNotifier(absintheSocket, {
       ...notifier,
-      requestStatus: requestStatuses.canceling
+      requestStatus: requestStatuses.canceling,
     })
   );
 
-const onSubscribeSucceed = (absintheSocket, notifier, {subscriptionId}) => {
+const onSubscribeSucceed = (absintheSocket, notifier, { subscriptionId }) => {
   const subscribedNotifier = refreshNotifier(absintheSocket, {
     ...notifier,
     subscriptionId,
-    requestStatus: requestStatuses.sent
+    requestStatus: requestStatuses.sent,
   });
 
   if (subscribedNotifier.isActive) {
@@ -113,11 +88,7 @@ const onSubscribeSucceed = (absintheSocket, notifier, {subscriptionId}) => {
   }
 };
 
-const onSubscribe = (
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<any, any>,
-  response: SubscriptionResponse
-) => {
+const onSubscribe = (absintheSocket, notifier, response) => {
   if (response.errors) {
     onError(absintheSocket, notifier, gqlErrorsToString(response.errors));
   } else {
@@ -125,15 +96,10 @@ const onSubscribe = (
   }
 };
 
-const subscribe = <Result, Variables: void | Object>(
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<Result, Variables>
-) => pushRequestUsing(absintheSocket, notifier, onSubscribe);
+const subscribe = (absintheSocket, notifier) =>
+  pushRequestUsing(absintheSocket, notifier, onSubscribe);
 
-const onDataMessage = (
-  absintheSocket: AbsintheSocket,
-  {payload}: Message<SubscriptionPayload<any>>
-) => {
+const onDataMessage = (absintheSocket, { payload }) => {
   const notifier = notifierFind(
     absintheSocket.notifiers,
     "subscriptionId",
@@ -147,9 +113,6 @@ const onDataMessage = (
 
 const dataMessageEventName = "subscription:data";
 
-const isDataMessage = (message: Message<>) =>
-  message.event === dataMessageEventName;
+const isDataMessage = (message) => message.event === dataMessageEventName;
 
-export {isDataMessage, onDataMessage, subscribe, unsubscribe};
-
-export type {SubscriptionPayload};
+export { isDataMessage, onDataMessage, subscribe, unsubscribe };

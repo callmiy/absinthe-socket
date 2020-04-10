@@ -1,9 +1,4 @@
-// @flow
-
-import {append} from "@jumpn/utils-array";
-
-import type {GqlRequest} from "@jumpn/utils-graphql/compat/cjs/types";
-
+import { append } from "@jumpn/utils-array";
 import joinChannel from "./joinChannel";
 import notifierCreate from "./notifier/create";
 import notifierFind from "./notifier/find";
@@ -14,10 +9,7 @@ import refreshNotifier from "./refreshNotifier";
 import requestStatuses from "./notifier/requestStatuses";
 import updateNotifiers from "./updateNotifiers";
 
-import type {AbsintheSocket} from "./types";
-import type {Notifier} from "./notifier/types";
-
-const connectOrJoinChannel = absintheSocket => {
+const connectOrJoinChannel = (absintheSocket) => {
   if (absintheSocket.phoenixSocket.isConnected()) {
     joinChannel(absintheSocket);
   } else {
@@ -81,10 +73,7 @@ const getExistentIfAny = (absintheSocket, request) => {
  *   variables: {userId: 10}
  * });
  */
-const send = <Result, Variables: void | Object>(
-  absintheSocket: AbsintheSocket,
-  request: GqlRequest<Variables>
-): Notifier<Result, Variables> =>
+const send = (absintheSocket, request) =>
   getExistentIfAny(absintheSocket, request) || sendNew(absintheSocket, request);
 
 export default send;

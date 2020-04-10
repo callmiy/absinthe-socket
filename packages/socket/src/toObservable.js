@@ -1,22 +1,6 @@
-// @flow
-
 import Observable from "zen-observable";
-
 import notifierFind from "./notifier/find";
 import observe from "./observe";
-
-import type {AbsintheSocket} from "./types";
-import type {Notifier, Observer} from "./notifier/types";
-
-type Options<Result, Variables: void | Object> = {|
-  onError: $ElementType<Observer<Result, Variables>, "onError">,
-  onStart: $ElementType<Observer<Result, Variables>, "onStart">,
-  unsubscribe: (
-    absintheSocket: AbsintheSocket,
-    notifier?: Notifier<Result, Variables>,
-    observer?: Observer<Result, Variables>
-  ) => void
-|};
 
 // prettier-ignore
 const getUnsubscriber = (absintheSocket, {request}, observer, unsubscribe) =>
@@ -26,7 +10,7 @@ const getUnsubscriber = (absintheSocket, {request}, observer, unsubscribe) =>
     unsubscribe(absintheSocket, notifier, notifier ? observer: undefined);
   };
 
-const onResult = ({operationType}, observableObserver) => result => {
+const onResult = ({ operationType }, observableObserver) => (result) => {
   observableObserver.next(result);
 
   if (operationType !== "subscription") {
@@ -37,7 +21,7 @@ const onResult = ({operationType}, observableObserver) => result => {
 const createObserver = (notifier, handlers, observableObserver) => ({
   ...handlers,
   onAbort: observableObserver.error.bind(observableObserver),
-  onResult: onResult(notifier, observableObserver)
+  onResult: onResult(notifier, observableObserver),
 });
 
 /**
@@ -69,12 +53,12 @@ const createObserver = (notifier, handlers, observableObserver) => ({
  *   unsubscribe: unobserveOrCancelIfNeeded
  * });
  */
-const toObservable = <Result, Variables: void | Object>(
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<Result, Variables>,
-  {unsubscribe, ...handlers}: $Shape<Options<Result, Variables>> = {}
+const toObservable = (
+  absintheSocket,
+  notifier,
+  { unsubscribe, ...handlers } = {}
 ) =>
-  new Observable(observableObserver => {
+  new Observable((observableObserver) => {
     const observer = createObserver(notifier, handlers, observableObserver);
 
     observe(absintheSocket, notifier, observer);

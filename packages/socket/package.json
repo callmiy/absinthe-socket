@@ -5,9 +5,12 @@
   "module": "dist/index.js",
   "main": "compat/cjs/index.js",
   "react-native": "src/index",
+  "types": "dist/index.d.ts",
   "scripts": {
     "version": "nps version",
-    "prepack": "nps prepack"
+    "prepack": "nps prepack && cp src/index.d.ts dist/",
+    "test": "jest",
+    "test:w": "yarn test --watch"
   },
   "repository": {
     "type": "git",
@@ -37,6 +40,7 @@
     "zen-observable": "0.8.11"
   },
   "devDependencies": {
+    "jest-watch-typeahead": "^0.5.0",
     "nps": "5.9.3"
   },
   "peerDependencies": {

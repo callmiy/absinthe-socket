@@ -1,18 +1,11 @@
-// @flow
-
 import observerNotifyAll from "./observer/notifyAll";
 
-import type {Event, Notifier} from "./types";
-
-const getObservers = ({activeObservers, canceledObservers}) => [
+const getObservers = ({ activeObservers, canceledObservers }) => [
   ...activeObservers,
-  ...canceledObservers
+  ...canceledObservers,
 ];
 
-const notify = <Result, Variables: void | Object>(
-  notifier: Notifier<Result, Variables>,
-  event: Event
-) => {
+const notify = (notifier, event) => {
   observerNotifyAll(getObservers(notifier), event);
 
   return notifier;

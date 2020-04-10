@@ -1,18 +1,12 @@
-// @flow
-
 import notifyCanceled from "./notifyCanceled";
-import {createCancelEvent} from "./event/eventCreators";
+import { createCancelEvent } from "./event/eventCreators";
 
-import type {Notifier} from "./types";
-
-const clearCanceled = notifier => ({
+const clearCanceled = (notifier) => ({
   ...notifier,
-  canceledObservers: []
+  canceledObservers: [],
 });
 
-const flushCanceled = <Result: any, Variables: void | Object>(
-  notifier: Notifier<Result, Variables>
-) =>
+const flushCanceled = (notifier) =>
   notifier.canceledObservers.length > 0
     ? clearCanceled(notifyCanceled(notifier, createCancelEvent()))
     : notifier;

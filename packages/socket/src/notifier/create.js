@@ -1,12 +1,5 @@
-// @flow
-
-import {getOperationType} from "@jumpn/utils-graphql";
-
-import type {GqlRequest} from "@jumpn/utils-graphql/compat/cjs/types";
-
+import { getOperationType } from "@jumpn/utils-graphql";
 import requestStatuses from "./requestStatuses";
-
-import type {Notifier} from "./types";
 
 const createUsing = (request, operationType) => ({
   operationType,
@@ -15,12 +8,10 @@ const createUsing = (request, operationType) => ({
   canceledObservers: [],
   isActive: true,
   requestStatus: requestStatuses.pending,
-  subscriptionId: undefined
+  subscriptionId: undefined,
 });
 
-const create = <Variables: void | Object>(
-  request: GqlRequest<Variables>
-): Notifier<any, $Subtype<Variables>> =>
+const create = (request) =>
   createUsing(request, getOperationType(request.operation));
 
 export default create;

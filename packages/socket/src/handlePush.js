@@ -1,10 +1,6 @@
-// @flow
+import { Push } from "phoenix";
 
-import {Push} from "phoenix";
-
-import type {PushHandler} from "./types";
-
-const handlePush = (push: Push, handler: PushHandler<any>) =>
+const handlePush = (push, handler) =>
   push
     .receive("ok", handler.onSucceed)
     .receive("error", handler.onError)

@@ -1,9 +1,4 @@
-// @flow
-
-import {Socket as PhoenixSocket} from "phoenix";
-
-import type {Message} from "phoenix";
-
+// @ts-check
 import abortNotifier from "./abortNotifier";
 import joinChannel from "./joinChannel";
 import notifierNotify from "./notifier/notify";
@@ -12,11 +7,9 @@ import notifierReset from "./notifier/reset";
 import refreshNotifier from "./refreshNotifier";
 import updateNotifiers from "./updateNotifiers";
 import * as withSubscription from "./subscription";
-import {createErrorEvent} from "./notifier/event/eventCreators";
+import { createErrorEvent } from "./notifier/event/eventCreators";
 
-import type {AbsintheSocket} from "./types";
-
-const onMessage = absintheSocket => (message: Message<>) => {
+const onMessage = (absintheSocket) => (message) => {
   if (withSubscription.isDataMessage(message)) {
     withSubscription.onDataMessage(absintheSocket, message);
   }
@@ -24,7 +17,7 @@ const onMessage = absintheSocket => (message: Message<>) => {
 
 const createConnectionCloseError = () => new Error("connection: close");
 
-const notifyConnectionCloseError = notifier =>
+const notifyConnectionCloseError = (notifier) =>
   notifierNotify(notifier, createErrorEvent(createConnectionCloseError()));
 
 const notifierOnConnectionCloseCanceled = (absintheSocket, notifier) =>
@@ -44,7 +37,7 @@ const notifierOnConnectionCloseActive = (absintheSocket, notifier) => {
   }
 };
 
-const notifierOnConnectionClose = absintheSocket => notifier => {
+const notifierOnConnectionClose = (absintheSocket) => (notifier) => {
   if (notifier.isActive) {
     notifierOnConnectionCloseActive(absintheSocket, notifier);
   } else {
@@ -52,13 +45,13 @@ const notifierOnConnectionClose = absintheSocket => notifier => {
   }
 };
 
-const onConnectionClose = absintheSocket => () =>
+const onConnectionClose = (absintheSocket) => () =>
   absintheSocket.notifiers.forEach(notifierOnConnectionClose(absintheSocket));
 
-const shouldJoinChannel = absintheSocket =>
+const shouldJoinChannel = (absintheSocket) =>
   !absintheSocket.channelJoinCreated && absintheSocket.notifiers.length > 0;
 
-const onConnectionOpen = absintheSocket => () => {
+const onConnectionOpen = (absintheSocket) => () => {
   if (shouldJoinChannel(absintheSocket)) {
     joinChannel(absintheSocket);
   }
@@ -77,12 +70,12 @@ const absintheChannelName = "__absinthe__:control";
  *   new PhoenixSocket("ws://localhost:4000/socket")
  * );
  */
-const create = (phoenixSocket: PhoenixSocket): AbsintheSocket => {
-  const absintheSocket: AbsintheSocket = {
+export const create = (phoenixSocket) => {
+  const absintheSocket = {
     phoenixSocket,
     channel: phoenixSocket.channel(absintheChannelName),
     channelJoinCreated: false,
-    notifiers: []
+    notifiers: [],
   };
 
   phoenixSocket.onOpen(onConnectionOpen(absintheSocket));

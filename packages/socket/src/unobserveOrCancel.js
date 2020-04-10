@@ -1,10 +1,5 @@
-// @flow
-
 import cancel from "./cancel";
 import unobserve from "./unobserve";
-
-import type {AbsintheSocket} from "./types";
-import type {Notifier, Observer} from "./notifier/types";
 
 const doUnobserveOrCancel = (absintheSocket, notifier, observer) =>
   notifier.activeObservers.length === 1
@@ -20,11 +15,7 @@ const doUnobserveOrCancel = (absintheSocket, notifier, observer) =>
  *
  * withAbsintheSocket.unobserve(absintheSocket, notifier, observer);
  */
-const unobserveOrCancel = <Result, Variables: void | Object>(
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<Result, Variables>,
-  observer: Observer<Result, Variables>
-) =>
+const unobserveOrCancel = (absintheSocket, notifier, observer) =>
   notifier.isActive
     ? doUnobserveOrCancel(absintheSocket, notifier, observer)
     : absintheSocket;

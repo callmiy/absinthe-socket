@@ -1,18 +1,12 @@
-// @flow
-
 import flushCanceled from "./flushCanceled";
 import requestStatuses from "./requestStatuses";
 
-import type {Notifier} from "./types";
-
-const reset = <Result, Variables: void | Object>(
-  notifier: Notifier<Result, Variables>
-) =>
+const reset = (notifier) =>
   flushCanceled({
     ...notifier,
     isActive: true,
     requestStatus: requestStatuses.pending,
-    subscriptionId: undefined
+    subscriptionId: undefined,
   });
 
 export default reset;

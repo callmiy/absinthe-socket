@@ -1,38 +1,28 @@
-// @flow
-
 import eventNames from "./eventNames";
 
-import type {
-  AbortEvent,
-  CancelEvent,
-  ErrorEvent,
-  Notifier,
-  ResultEvent,
-  StartEvent
-} from "../types";
-
-const createStartEvent = <Payload: Notifier<any, any>>(
-  payload: Payload
-): StartEvent<Payload> => ({payload, name: eventNames.start});
-
-const createResultEvent = <Result>(payload: Result): ResultEvent<Result> => ({
+const createStartEvent = (payload) => ({
   payload,
-  name: eventNames.result
+  name: eventNames.start,
 });
 
-const createErrorEvent = (payload: Error): ErrorEvent => ({
+const createResultEvent = (payload) => ({
   payload,
-  name: eventNames.error
+  name: eventNames.result,
 });
 
-const createCancelEvent = (): CancelEvent => ({
+const createErrorEvent = (payload) => ({
+  payload,
+  name: eventNames.error,
+});
+
+const createCancelEvent = () => ({
   name: eventNames.cancel,
-  payload: undefined
+  payload: undefined,
 });
 
-const createAbortEvent = (payload: Error): AbortEvent => ({
+const createAbortEvent = (payload) => ({
   payload,
-  name: eventNames.abort
+  name: eventNames.abort,
 });
 
 export {
@@ -40,5 +30,5 @@ export {
   createResultEvent,
   createErrorEvent,
   createCancelEvent,
-  createAbortEvent
+  createAbortEvent,
 };

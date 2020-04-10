@@ -1,10 +1,5 @@
-// @flow
-
 import notifierObserve from "./notifier/observe";
 import refreshNotifier from "./refreshNotifier";
-
-import type {AbsintheSocket} from "./types";
-import type {Notifier, Observer} from "./notifier/types";
 
 /**
  * Observes given notifier using the provided observer
@@ -21,10 +16,7 @@ import type {Notifier, Observer} from "./notifier/types";
  *   onResult: logEvent("result")
  * });
  */
-const observe = <Result, Variables: void | Object>(
-  absintheSocket: AbsintheSocket,
-  notifier: Notifier<Result, Variables>,
-  observer: Observer<Result, Variables>
-) => refreshNotifier(absintheSocket, notifierObserve(notifier, observer));
+const observe = (absintheSocket, notifier, observer) =>
+  refreshNotifier(absintheSocket, notifierObserve(notifier, observer));
 
 export default observe;

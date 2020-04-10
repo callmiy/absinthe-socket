@@ -1,11 +1,5 @@
-// @flow
+import { hasIn } from "@jumpn/utils-composite";
 
-import {hasIn} from "@jumpn/utils-composite";
-
-import type {Notifier} from "./types";
-
-const find = (notifiers: Array<Notifier<any, any>>, key: string, value: any) =>
-  // $FlowFixMe: flow is having some troubles to match hasIn signature (curry)
-  notifiers.find(hasIn([key], value));
+const find = (notifiers, key, value) => notifiers.find(hasIn([key], value));
 
 export default find;
