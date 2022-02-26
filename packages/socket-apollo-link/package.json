@@ -1,6 +1,6 @@
 {
-  "name": "@absinthe/socket-apollo-link",
-  "version": "0.2.1",
+  "name": "@kanmii/socket-apollo-link",
+  "version": "0.2.4",
   "description": "Absinthe Socket Apollo Link",
   "module": "dist/index.js",
   "main": "compat/cjs/index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/absinthe-graphql/absinthe-socket.git"
+    "url": "git+https://github.com/kanmii/absinthe-socket.git"
   },
   "author": "Mauro Titimoli <mgtitimoli@gmail.com> (https://github.com/mgtitimoli)",
   "license": "MIT",
